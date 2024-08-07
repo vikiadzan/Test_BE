@@ -1,0 +1,251 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Peminjaman buku",
+        "description": "API ini berisi peminjaman dan pengembalian buku serta untuk cek buku dan anggota",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/borrow": {
+            "post": {
+                "tags": [
+                    "Borrow"
+                ],
+                "summary": "Meminjam buku",
+                "operationId": "borrowBook",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code_member",
+                                    "code_book"
+                                ],
+                                "properties": {
+                                    "code_member": {
+                                        "type": "string",
+                                        "example": "M001"
+                                    },
+                                    "code_book": {
+                                        "type": "string",
+                                        "example": "B001"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Buku berhasil dipinjam",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Buku berhasil dipinjam"
+                                        },
+                                        "book": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Book Title"
+                                                },
+                                                "author": {
+                                                    "type": "string",
+                                                    "example": "Author Name"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Member atau buku tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/return": {
+            "post": {
+                "tags": [
+                    "Return"
+                ],
+                "summary": "Mengembalikan buku",
+                "operationId": "returnBook",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code_member",
+                                    "code_book",
+                                    "return_date"
+                                ],
+                                "properties": {
+                                    "code_member": {
+                                        "type": "string",
+                                        "example": "M001"
+                                    },
+                                    "code_book": {
+                                        "type": "string",
+                                        "example": "B001"
+                                    },
+                                    "return_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-08-07"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Buku berhasil dikembalikan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Buku berhasil dikembalikan"
+                                        },
+                                        "book": {
+                                            "properties": {
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Book Title"
+                                                },
+                                                "author": {
+                                                    "type": "string",
+                                                    "example": "Author Name"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Permintaan pengembalian tidak valid"
+                    }
+                }
+            }
+        },
+        "/api/books": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Cek daftar buku",
+                "operationId": "checkBooks",
+                "responses": {
+                    "200": {
+                        "description": "Daftar buku berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "type": "string",
+                                                "example": "B001"
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Book Title"
+                                            },
+                                            "author": {
+                                                "type": "string",
+                                                "example": "Author Name"
+                                            },
+                                            "stock": {
+                                                "type": "integer",
+                                                "example": 10
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/members": {
+            "get": {
+                "tags": [
+                    "Members"
+                ],
+                "summary": "Cek Member",
+                "operationId": "checkMembers",
+                "responses": {
+                    "200": {
+                        "description": "Daftar memeber berhasil diambil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "code": {
+                                                "type": "string",
+                                                "example": "M001"
+                                            },
+                                            "nama": {
+                                                "type": "string",
+                                                "example": "Name Member"
+                                            },
+                                            "borrowed_books_count": {
+                                                "type": "integer",
+                                                "example": "1"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Borrow",
+            "description": "Borrow"
+        },
+        {
+            "name": "Return",
+            "description": "Return"
+        },
+        {
+            "name": "Books",
+            "description": "Books"
+        },
+        {
+            "name": "Members",
+            "description": "Members"
+        }
+    ]
+}
